@@ -8,3 +8,7 @@ System Overview/Proposed Solution. Our project will build a real-time distribute
 Technologies and Tools. The following resources will be used:
 •	Java. Primary programming language for back-end application development.
 •	JavaScript/HTML OR JavaFX. For building a browser-based user GUI.
+
+//ESSENTIAL
+Set index to public.
+install Node and add to project
