@@ -16,8 +16,8 @@
       "socket.io": "^4.8.1"
     },
 
-    // Nodemon SHOULD automatically restarts the server during development on file changes
+
     "devDependencies": { 
-      "nodemon": "^3.1.10"
+      "nodemon": "^3.1.10"    // Nodemon SHOULD automatically restarts the server during development on file changes
     }
   }
