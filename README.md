@@ -12,3 +12,4 @@ Technologies and Tools. The following resources will be used:
 //ESSENTIAL
 Set index to public.
 install Node and add to project
+npm run dev to run server
