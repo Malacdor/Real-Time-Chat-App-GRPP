@@ -1,23 +1,21 @@
 {
-    "name": "chat-websocket",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-      "start": "node app.js",
-      "dev": "nodemon app.js"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "type": "commonjs",
-    "dependencies": {
-      "express": "^5.1.0",
-      "socket.io": "^4.8.1"
-    },
-
-
-    "devDependencies": { 
-      "nodemon": "^3.1.10"    // Nodemon SHOULD automatically restarts the server during development on file changes
-    }
+  "name": "chat-websocket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
+}
