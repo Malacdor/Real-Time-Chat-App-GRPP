@@ -1,11 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  // need a link to a css file to make a proper ui
-    <title>Chat App Project</title>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>CS Group Chat</title>
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <h1>CS Group APP</h1>
+  <div class="app">
+    <header class="app-header">
+      <div class="app-title">
+        <span class="app-logo">💬</span>
+        <span>CS Group App</span>
+      </div>
+      <div class="clients-count">
+        Online: <span id="clients-total">0</span>
+      </div>
+    </header>
+
+    <main class="chat-layout">
+      <!-- Chat area -->
+      <section class="chat-window">
+        <ul id="messages" class="messages-list">
+          <!-- Messages get injected here -->
+        </ul>
+        <div id="feedback" class="typing-indicator"></div>
+      </section>
+
+      <!-- Sidebar -->
+      <aside class="chat-sidebar">
+        <h2>Room Info</h2>
+        <p>Welcome to the CS group chat.</p>
+        <p>Use this space to study, debug, and share ideas.</p>
+        <div class="hint">
+          Tip: Your name appears on your messages.
+        </div>
+      </aside>
+    </main>
+
+    <form id="message-form" class="message-form" autocomplete="off">
+      <input
+        id="name-input"
+        class="input-name"
+        type="text"
+        placeholder="Your name"
+        required
+      />
+      <input
+        id="message-input"
+        class="input-message"
+        type="text"
+        placeholder="Type a message..."
+        required
+      />
+      <button type="submit" class="send-button">Send</button>
+    </form>
+  </div>
+
+  <!-- Socket.io client -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- Your client-side logic -->
+  <script src="main.js"></script>
 </body>
 </html>
