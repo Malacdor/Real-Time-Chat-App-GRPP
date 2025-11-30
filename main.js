@@ -1,5 +1,9 @@
 const socket = io();
 
+// 🔊 NEW: load sounds for send / receive
+const sendSound = new Audio('sounds/send.mp3');
+const receiveSound = new Audio('sounds/receive.mp3');
+
 // DOM elements
 const clientsTotal = document.getElementById('clients-total');
 const messageForm = document.getElementById('message-form');
@@ -17,6 +21,14 @@ socket.on('clients-total', number => {
 
 // Receive message from others
 socket.on('chat-message', data => {
+  // 🔊 NEW: play receive sound
+  try {
+    receiveSound.currentTime = 0;
+    receiveSound.play();
+  } catch (e) {
+    // Ignore play errors (browser blocking, etc.)
+  }
+
   addMessageToUI(false, data);
 });
 
@@ -45,17 +57,25 @@ messageForm.addEventListener('submit', e => {
     return;
   }
 
+  const now = new Date();
+
   const data = {
     name,
     message,
-    dateTime: new Date().toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit'
-    })
+    // 🔁 UPDATED: store full ISO timestamp instead of just local time
+    dateTime: now.toISOString()
   };
 
   // Show in my own UI
   addMessageToUI(true, data);
+
+  // 🔊 NEW: play send sound
+  try {
+    sendSound.currentTime = 0;
+    sendSound.play();
+  } catch (e) {
+    // Ignore play errors
+  }
 
   // Send to others
   socket.emit('message', data);
@@ -95,7 +115,20 @@ function addMessageToUI(isOwnMessage, data) {
 
   const timeSpan = document.createElement('span');
   timeSpan.classList.add('message-time');
-  timeSpan.textContent = data.dateTime || '';
+
+  // ⏰ NEW: nicer time formatting + full timestamp on hover
+  if (data.dateTime) {
+    const dateObj = new Date(data.dateTime);
+    const timeText = dateObj.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    timeSpan.textContent = timeText;
+    // Full date/time when you hover the time
+    timeSpan.title = dateObj.toLocaleString();
+  } else {
+    timeSpan.textContent = '';
+  }
 
   header.appendChild(nameSpan);
   header.appendChild(timeSpan);
