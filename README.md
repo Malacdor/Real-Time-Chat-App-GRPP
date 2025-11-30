@@ -8,8 +8,12 @@ System Overview/Proposed Solution. Our project will build a real-time distribute
 Technologies and Tools. The following resources will be used:
 •	Java. Primary programming language for back-end application development.
 •	JavaScript/HTML OR JavaFX. For building a browser-based user GUI.
+•	Tunneling ran through ngrok. Must have ngrok installed
+
 
 //ESSENTIAL
 Set index to public.
-install Node and add to project
-npm run dev to run server
+install Node Modules and add to project
+Install Ngrok in terminal, Must have token!
+npm run dev to run application -> node server.js to open server -> run through ngrok http 3000  to tunnel and run server both on and off network.
+
