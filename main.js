@@ -46,8 +46,34 @@ socket.on('feedback', data => {
   }, 1200);
 });
 
+//system messages (join/welcome/leave)
+socket.on('system-message', (data) => {
+	const row = document.createElement('li');
+	row.classList.add('system-message');
+	
+	const text = document.createElement('div');
+	text.classList.add('system-text');
+	text.textContent = data.message;
+	
+	//show timestamp
+	if (data.dateTime) {
+		const timeSpan = document.createElement('span');
+		timeSpan.classList.add('system-time');
+		const dateObj = new Date(data.dateTime);
+		timeSpan.textContent = dateObj.toLocaleTimeString([], {
+			hour: '2-digit',
+			minute: '2-digit'
+			});
+			text.appendChild(timeSpan);
+			}
+			
+	row.appendChild(text);
+	messagesList.appendChild(row);
+})
+
+
 // Send new message
-messageForm.addEventListener('submit', e => {
+messageForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
   const name = nameInput.value.trim();
@@ -82,6 +108,7 @@ messageForm.addEventListener('submit', e => {
 
   messageInput.value = '';
   messageInput.focus();
+
 });
 
 // Emit typing feedback
@@ -93,6 +120,13 @@ messageInput.addEventListener('input', () => {
   typingTimeout = setTimeout(() => {
     socket.emit('feedback', {});
   }, 1000);
+});
+
+nameInput.addEventListener('blur', () => {
+	const name = nameInput.value.trim();
+	if (name) {
+		socket.emit('new-user', name);
+	}
 });
 
 function addMessageToUI(isOwnMessage, data) {

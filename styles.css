@@ -165,6 +165,22 @@ body {
   line-height: 1.4;
 }
 
+.system-message {
+	text-align: center;
+	margin: 5px 0;
+}
+
+.system-text {
+	font-style: italic;
+	color: gray;
+	font-size: 0.9em;
+}
+.system-time {
+	margin-left: 8px;
+	font-size: 0.8em;
+	color: #aaa;
+}
+
 /* Typing indicator */
 .typing-indicator {
   min-height: 20px;
