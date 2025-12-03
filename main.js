@@ -55,6 +55,7 @@ socket.on('system-message', (data) => {
 	text.classList.add('system-text');
 	text.textContent = data.message;
 	
+	
 	//show timestamp
 	if (data.dateTime) {
 		const timeSpan = document.createElement('span');
