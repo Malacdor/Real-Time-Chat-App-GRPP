@@ -90,16 +90,21 @@ body {
 
 /* Chat window */
 .chat-window {
-  padding: 14px 18px 6px;
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid rgba(148, 163, 184, 0.2);
+	flex: 1;
+	display: flex;
+  	padding: 14px 18px 6px;
+  	display: flex;
+  	overflow: hidden; /* prevents messages from spilling out*/
+ 	flex-direction: column;
+ 	height: 70vh; /* defines chat window to a set height regardless of user's video resolution size*/
+ 	border-right: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 .messages-list {
   list-style: none;
   flex: 1;
   overflow-y: auto;
+  height: 100%;
   padding-right: 4px;
   display: flex;
   flex-direction: column;
