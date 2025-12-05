@@ -48,30 +48,29 @@ socket.on('feedback', data => {
 
 //system messages (join/welcome/leave)
 socket.on('system-message', (data) => {
-	const row = document.createElement('li');
-	row.classList.add('system-message');
-	
-	const text = document.createElement('div');
-	text.classList.add('system-text');
-	text.textContent = data.message;
-	
-	
-	//show timestamp
-	if (data.dateTime) {
-		const timeSpan = document.createElement('span');
-		timeSpan.classList.add('system-time');
-		const dateObj = new Date(data.dateTime);
-		timeSpan.textContent = dateObj.toLocaleTimeString([], {
-			hour: '2-digit',
-			minute: '2-digit'
-			});
-			text.appendChild(timeSpan);
-			}
-			
-	row.appendChild(text);
-	messagesList.appendChild(row);
-})
+  const row = document.createElement('li');
+  row.classList.add('system-message');
 
+  const text = document.createElement('div');
+  text.classList.add('system-text');
+  text.textContent = data.message;
+
+  //show timestamp
+  if (data.dateTime) {
+    const timeSpan = document.createElement('span');
+    timeSpan.classList.add('system-time');
+    const dateObj = new Date(data.dateTime);
+    timeSpan.textContent = dateObj.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    text.appendChild(timeSpan);
+  }
+
+  row.appendChild(text);
+  messagesList.appendChild(row);
+  messagesList.scrollTop = messagesList.scrollHeight;
+});
 
 // Send new message
 messageForm.addEventListener('submit', (e) => {
@@ -105,11 +104,31 @@ messageForm.addEventListener('submit', (e) => {
   }
 
   // Send to others
-  socket.emit('message', data);
+  const MAX_RETRIES = 3;
+  let attempts = 0;
+
+  //message delivery + built in message delivery error-handling
+  function sendRetryMax() {
+    socket.emit('message', data, (ack) => {
+      if (ack && ack.status == 'ok') {
+        showSystemMessage(`Message delivered successfully at ${new Date().toLocaleTimeString()}`);
+      } else {
+        attempts++;
+        if (attempts < MAX_RETRIES) {
+          showSystemMessage(`Delivery failed. Retrying... (attempt ${attempts})`);
+          sendRetryMax();
+        } else {
+          showSystemMessage(`Message delivery failed after ${MAX_RETRIES} attempts.`);
+        }
+      }
+    });
+  }
+
+  // ✅ Call the retry function inside the handler
+  sendRetryMax();
 
   messageInput.value = '';
   messageInput.focus();
-
 });
 
 // Emit typing feedback
@@ -124,10 +143,10 @@ messageInput.addEventListener('input', () => {
 });
 
 nameInput.addEventListener('blur', () => {
-	const name = nameInput.value.trim();
-	if (name) {
-		socket.emit('new-user', name);
-	}
+  const name = nameInput.value.trim();
+  if (name) {
+    socket.emit('new-user', name);
+  }
 });
 
 function addMessageToUI(isOwnMessage, data) {
@@ -185,3 +204,16 @@ function addMessageToUI(isOwnMessage, data) {
 function clearFeedback() {
   feedback.textContent = '';
 }
+
+function showSystemMessage(text) {
+  const row = document.createElement('li');
+  row.classList.add('system-message');
+
+  const div = document.createElement('div');
+  div.classList.add('system-text');
+  div.textContent = text;
+
+  row.appendChild(div);
+  messagesList.appendChild(row);
+  messagesList.scrollTop = messagesList.scrollHeight;
+} //end fxn showSystemMessage

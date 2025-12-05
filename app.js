@@ -55,9 +55,14 @@ function onConnected(socket) {
 	});
   });
 
-  socket.on('message', (data) => {
+  socket.on('message', (data, callback) => {
     // console.log(data)
+	try {
     socket.broadcast.emit('chat-message', data)
+	callback({ status: 'ok' });
+	} catch (e) {
+		callback({status: 'error', error: e.message });
+	}
   })
 
   socket.on('feedback', (data) => {
